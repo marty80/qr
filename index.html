@@ -37,6 +37,33 @@
             padding: 20px;
         }
 
+        @keyframes border-rotate {
+            0% {
+                border-image: linear-gradient(0deg, #ff6b6b, #4ecdc4, #45b7d1, #96c93d) 1;
+            }
+            25% {
+                border-image: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96c93d) 1;
+            }
+            50% {
+                border-image: linear-gradient(180deg, #ff6b6b, #4ecdc4, #45b7d1, #96c93d) 1;
+            }
+            75% {
+                border-image: linear-gradient(270deg, #ff6b6b, #4ecdc4, #45b7d1, #96c93d) 1;
+            }
+            100% {
+                border-image: linear-gradient(360deg, #ff6b6b, #4ecdc4, #45b7d1, #96c93d) 1;
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
         .qr-item {
             text-align: center;
             border-radius: 12px;
@@ -44,11 +71,55 @@
             padding: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            border: 3px solid transparent;
+            z-index: 1;
+        }
+
+        .qr-item::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            right: -8px;
+            bottom: -8px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 215, 0, 0.3),
+                rgba(255, 223, 91, 0.5),
+                rgba(255, 215, 0, 0.3),
+                transparent
+            );
+            background-size: 200% 100%;
+            border-radius: 16px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            clip-path: polygon(
+                0 0,
+                100% 0,
+                100% 100%,
+                0 100%,
+                0 0,
+                8px 8px,
+                8px calc(100% - 8px),
+                calc(100% - 8px) calc(100% - 8px),
+                calc(100% - 8px) 8px,
+                8px 8px
+            );
         }
 
         .qr-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.2);
+            animation: border-rotate 2s linear infinite;
+        }
+
+        .qr-item:hover::before {
+            opacity: 1;
+            animation: shimmer 3s infinite linear;
         }
 
         .image-container {
